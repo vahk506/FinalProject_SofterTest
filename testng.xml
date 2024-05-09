@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Application Test Suite">
+    <test name="Edit Bag Functionality/ADD">
+        <parameter name="value1" value="4" />
+        <classes>
+            <class name="EditBagTest">
+                <methods>
+                    <include name="testAddQuantity" />
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+
+    <test name="Edit Bag Functionality/Decrease">
+        <parameter name="value1" value="4" />
+        <parameter name="value2" value="2" />
+        <classes>
+            <class name="EditBagTest">
+                <methods>
+                    <include name="testDecreaseQuantity" />
+                </methods>
+            </class>
+
+        </classes>
+    </test>
+
+    <test name = "Search Functionality">
+        <parameter name="text" value="1149" />
+        <classes>
+        <class name="SearchTest">
+            <methods>
+                <include name="SearchForTest" />
+
+            </methods>
+        </class>
+        </classes>
+    </test>
+</suite>
