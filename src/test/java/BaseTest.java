@@ -15,14 +15,6 @@ public class BaseTest {
     /** Class that is responsible for correctly Set up  Remote Web Driver*/
     @BeforeClass
     public void SetUp() throws Exception {
-//        driver = new ChromeDriver();
-//        driver.manage().window().maximize();
-//        driver.get("https://www.ae.com/us/en");
-//        homePage = new HomePage(driver);
-//
-//        ScreenshotListener screenshotListener = new ScreenshotListener();
-//        screenshotListener.setDriver(driver);
-
 
         // Set up Chrome options
         ChromeOptions options = new ChromeOptions();
@@ -41,7 +33,7 @@ public class BaseTest {
         screenshotListener.setDriver(driver);
     }
     /**
-     * Method that is invoking after each test execution
+     * Method that is invoked after each test execution
      * It closes the Page
      * */
     @AfterClass
