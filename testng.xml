@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Application Test Suite">
     <test name="Edit Bag Functionality/ADD">
-        <parameter name="value1" value="4" />
+        <parameter name="value1" value="2" />
         <classes>
             <class name="EditBagTest">
                 <methods>
@@ -14,8 +14,8 @@
     </test>
 
     <test name="Edit Bag Functionality/Decrease">
-        <parameter name="value1" value="4" />
-        <parameter name="value2" value="2" />
+        <parameter name="value1" value="3" />
+        <parameter name="value2" value="1" />
         <classes>
             <class name="EditBagTest">
                 <methods>
@@ -27,14 +27,24 @@
     </test>
 
     <test name = "Search Functionality">
-        <parameter name="text" value="1149" />
+        <parameter name="text" value="sneakers" />
         <classes>
-        <class name="SearchTest">
-            <methods>
-                <include name="SearchForTest" />
+            <class name="SearchTest">
+                <methods>
+                    <include name="SearchTest" />
 
-            </methods>
-        </class>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name = "Search Functionality With Random symbols">
+        <parameter name="length" value="15" />
+        <classes>
+            <class name="SearchTest">
+                <methods>
+                    <include name="InvalidSearchTest" />
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

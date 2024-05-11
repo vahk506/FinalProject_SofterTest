@@ -1,3 +1,5 @@
+
+import AssertionMessages.AssertionMessagesForSearchTest;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
@@ -13,31 +15,46 @@ public class SearchTest extends BaseTest{
      * */
     @Test
     @Parameters("text")
-    public void SearchForTest(String text){
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-        basePage.clickOnSearchSign();
-        basePage.addTextSearch(text);
-        MenPage menPage = basePage.clickOnSearchButton();
+    public void SearchTest(String text){
+        homePage.acceptPrivacyModal();
+        homePage.clickOnSearchSign();
+        homePage.addTextSearch(text);
+        SearchResultPage searchResult = homePage.clickOnSearchButton();
+        boolean flag = searchResult.FetchingTheSearchResult(text);
 
-        Assert.assertEquals(menPage.successfulSearch(),AssertionMessages.Search_Result);
+        Assert.assertEquals(flag, AssertionMessagesForSearchTest.Search_Result , "We have  products under that ID/Key");
     }
 
     /**Test whether the webpage allows us to perform empty search */
     @Test
     public void EmptySearchTest(){
-        basePage.acceptPrivacyModal();
-        basePage.closeAdMark();
-        basePage.clickOnSearchSign();
-        basePage.addEmptyTextSearch();
+        homePage.acceptPrivacyModal();
+        homePage.clickOnSearchSign();
+        homePage.addEmptyTextSearch();
 
         String originalPageSource = driver.getPageSource();
-        basePage.clickOnSearchButton();
+        homePage.clickOnSearchButton();
         String newPageSource = driver.getPageSource();
 
-        Assert.assertEquals(newPageSource, originalPageSource, "The page source should remain unchanged after clicking the search button with empty input.");
+        Assert.assertNotEquals(newPageSource, originalPageSource, AssertionMessagesForSearchTest.Empty_Search);
 
+    }
+
+    /** Test to check whether the search by random character will give some result or not*/
+    /**
+     * Here is a bag, it allows us to find some products with a key word consisting of random symbols
+     * As a result this test will always fail.
+     * */
+    @Test
+    @Parameters("length")
+    public void InvalidSearchTest(int length){
+        homePage.acceptPrivacyModal();
+        homePage.clickOnSearchSign();
+        homePage.AddRandomText(length);;
+        SearchResultPage searchResult = homePage.clickOnSearchButton();
+
+
+        Assert.assertEquals(searchResult.successfulSearch(), AssertionMessagesForSearchTest.Search_Result_With_Random_Symbols);
     }
 
 

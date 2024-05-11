@@ -1,3 +1,4 @@
+import AssertionMessages.AssertionMessagesForEditBagTest;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
@@ -16,10 +17,8 @@ public class EditBagTest extends BaseTest{
     @Parameters("value1")
     public void testAddQuantity(int value1) throws InterruptedException {
 
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-              basePage.closeAdMark();
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         ProductPage productPage = menPage.clickOnProduct();
         productPage.clickOnSizeDropDown1();
@@ -31,14 +30,13 @@ public class EditBagTest extends BaseTest{
         int initialQuantity = Integer.parseInt(bagPage.quantityBeforeUpdate().replaceAll("[^\\d]", ""));
 
         bagPage.addQuantity(value1); //add quantity "value" times
-        bagPage.clickOnSizeDropDown();
-        bagPage.clickOnSize();
         bagPage.clickOnUpdate();
+
         int updatedQuantity = Integer.parseInt(bagPage.quantityAfterUpdate().replaceAll("[^\\d]", ""));
         int expectedQuantity = initialQuantity + value1;
         System.out.println(initialQuantity);
         System.out.println(expectedQuantity);
-        Assert.assertEquals(updatedQuantity, expectedQuantity, AssertionMessages.Quantity_updated_successfully);
+        Assert.assertEquals(updatedQuantity, expectedQuantity, AssertionMessages.AssertionMessagesForEditBagTest.Quantity_updated_successfully);
 
     }
 
@@ -52,11 +50,8 @@ public class EditBagTest extends BaseTest{
     @Parameters({"value1", "value2"})
     public void testDecreaseQuantity(int value1 , int value2) throws InterruptedException {
 
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         ProductPage productPage = menPage.clickOnProduct();
         productPage.clickOnSizeDropDown1();
@@ -71,23 +66,19 @@ public class EditBagTest extends BaseTest{
             bagPage.addQuantity(value1); //add Quantity "value1" times if there is only 1 product
 
         bagPage.decreaseQuantity(value2); //decrease quantity "value2" times
-        bagPage.clickOnSizeDropDown();
-        bagPage.clickOnSize();
         bagPage.clickOnUpdate();
         int updatedQuantity = Integer.parseInt(bagPage.quantityAfterUpdate().replaceAll("[^\\d]", ""));
         int expectedQuantity = initialQuantity + value1 - value2;
         System.out.println(initialQuantity);
         System.out.println(expectedQuantity);
-        Assert.assertEquals(updatedQuantity, expectedQuantity, AssertionMessages.Quantity_updated_successfully);
+        Assert.assertEquals(updatedQuantity, expectedQuantity, AssertionMessagesForEditBagTest.Quantity_updated_successfully);
 
     }
     /** Test to check whether we can remove the product from the bag  */
     @Test
     public void removeProductTest() throws InterruptedException {
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         ProductPage productPage = menPage.clickOnProduct();
         productPage.clickOnSizeDropDown1();
@@ -96,7 +87,7 @@ public class EditBagTest extends BaseTest{
         BagPage bagPage = productPage.clickOnBag();
         bagPage.clickOnRemoveProduct();
 
-        Assert.assertEquals(bagPage.BagInfo(), AssertionMessages.Bag_Is_Empty);
+        Assert.assertEquals(bagPage.BagInfo(), AssertionMessagesForEditBagTest.Bag_Is_Empty);
 
 
 

@@ -1,3 +1,4 @@
+import AssertionMessages.AssertionMessagesForProductFilterTest;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -5,20 +6,30 @@ import org.testng.annotations.Test;
 @Listeners(ScreenshotListener.class)
 public class ProductFilterTest extends BaseTest {
     /**
-     * Test to check whether the filter l-H works
+     * Test to check whether the filter L-H works
      * */
 
     @Test
-    public void TestSteps() throws InterruptedException {
+    public void LowToHighTest(){
 
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         menPage.clickOnFilterLtoH();
 
-        Assert.assertEquals(menPage.checkThePrices(), AssertionMessages.Lowest_TO_Highest);
+        Assert.assertEquals(menPage.checkThePricesLowestToHighest(), AssertionMessagesForProductFilterTest.Lowest_To_Highest);
 
+    }
+    /**
+     * Test to check whether the filter H-L works
+     * */
+    @Test
+    public void HighToLowTest(){
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
+        menPage.clickOnViewAll();
+        menPage.clickOnFilterHtoL();
+
+        Assert.assertEquals(menPage.checkThePricesHighestToLowest(), AssertionMessagesForProductFilterTest.Highest_To_Lowest);
     }
 }

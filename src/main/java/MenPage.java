@@ -1,3 +1,4 @@
+import Locators.LocatorsForMenPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -7,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -15,43 +17,51 @@ public class MenPage {
 
     private WebDriver driver;
     WebDriverWait wait;
-    /** Constructor*/
+
+    /**
+     * Constructor
+     */
     public MenPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    /** Method to see all Man clothes*/
-    public MenPage clickOnViewAll() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.VIEW_ALL)).click();
-        return this;
+
+    /**
+     * Method to see all Man clothes
+     */
+    public void clickOnViewAll() {
+        driver.findElement(Locators.LocatorsForMenPage.VIEW_ALL).click();
     }
-    /** Click on the first Product that appears */
+
+    /**
+     * Click on the first Product that appears
+     */
     public ProductPage clickOnProduct() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.PRODUCT));
-        driver.findElement(Locators.PRODUCT).click();
+        driver.findElement(Locators.LocatorsForMenPage.PRODUCT).click();
         return new ProductPage(driver);
     }
 
-    /** A method to check whether the search gave a result*/
-    public String successfulSearch() {
-        WebElement searchText = wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.SEARCH_RESULT));
-        boolean isDisplayed = searchText.isDisplayed();
-
-        if (isDisplayed) {
-            return "We have products under that ID";
-        } else {
-            return "We have found 0 products";
-        }
+    /**
+     * Method to click on the filter lowest-to-highest prices
+     */
+    public void clickOnFilterLtoH() {
+        driver.findElement(Locators.LocatorsForMenPage.LOWEST_TO_HIGHEST).click();
     }
 
-    /** Method to click on the filter lowest-to-highest prices*/
-    public MenPage clickOnFilterLtoH(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.LOWEST_TO_HIGHEST)).click();
-        return this;
+    /**
+     * Method to click on the filter lowest-to-highest prices
+     */
+    public void clickOnFilterHtoL() {
+        driver.findElement(LocatorsForMenPage.HIGHEST_TO_LOWEST).click();
     }
-    /** Checks whether the products are put from lowest to highest */
-    public String checkThePrices(){
-        List<WebElement> priceElements = driver.findElements(Locators.SIMILAR_PRODUCTS);
+
+    /**
+     * Checks whether the products are put from lowest to highest
+     */
+    public String checkThePricesLowestToHighest() {
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);
         List<Double> prices = new ArrayList<>();
         for (WebElement priceElement : priceElements) {
             String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
@@ -66,34 +76,197 @@ public class MenPage {
             return "Prices are not sorted from lowest to highest.";
         }
     }
+
+    public String checkThePricesHighestToLowest() {
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);
+        List<Double> prices = new ArrayList<>();
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            prices.add(Double.parseDouble(priceText));
+        }
+
+        List<Double> sortedPrices = new ArrayList<>(prices);
+        // Sort the list in descending order
+        Collections.sort(sortedPrices, Comparator.reverseOrder());
+
+        // Check if the original list is equal to the sorted (in descending order) list
+        if (prices.equals(sortedPrices)) {
+            return "Prices are sorted from highest to lowest.";
+        } else {
+            return "Prices are not sorted from highest to lowest.";
+        }
+    }
     //--------
-    /**  Method to click on Quick Shop button*/
-    public MenPage clickOnQuickShop(){
+
+    /**
+     * Method to click on Quick Shop button
+     */
+    public void clickOnQuickShop() {
+        // Using implicit wait set on the WebDriver to wait for the product element to be present
+        WebElement product = driver.findElement(Locators.LocatorsForMenPage.PRODUCT);
+
+        // Perform hover action on the product element
         var actions = new Actions(driver);
-        WebElement figure1 = wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.PRODUCT));
-        actions.moveToElement(figure1).perform();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.QUICK_ADD)).click();
-        return this;
-    }
-    /** Method to click on size drop down*/
-    public MenPage clickOnSizeDropDown1() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.SIZE_DROPDOWN_MENU_FOR_2nd)).click();
-        return this;
-    }
-    /** Method to chose on size*/
-    public MenPage clickOnSize2(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.SIZE2)).click();
-        return this;
-    }
-    /** Method to Add the product to the bag*/
-    public MenPage clickOnAddToBag2(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.ADD_TO_BAG)).click();
-        return this;
-    }
-    /** Checks whether the product has been added to the bag*/
-    public String successText() {
-        return  wait.until(ExpectedConditions.visibilityOfElementLocated(Locators.ADD_TO_CART_SUCCESS_TEXT2)).getText();
+        actions.moveToElement(product).perform();
+
+        // Click on the quick add button assuming it becomes interactable once the product is hovered
+        driver.findElement(Locators.LocatorsForMenPage.QUICK_ADD).click();
     }
 
+    /**
+     * Method to click on size drop down
+     */
+    public void clickOnSizeDropDown1() {
+        driver.findElement(Locators.LocatorsForMenPage.SIZE_DROPDOWN_MENU_FOR_2nd).click();
+    }
+
+    /**
+     * Method to choose the size
+     */
+    public void clickOnSize2() {
+        driver.findElement(Locators.LocatorsForMenPage.SIZE2).click();
+    }
+
+    /**
+     * Method to Add the product to the bag
+     */
+    public void clickOnAddToBag2() {
+        driver.findElement(Locators.LocatorsForMenPage.ADD_TO_BAG).click();
+    }
+
+    /**
+     * Checks whether the product has been added to the bag
+     */
+    public String successText() {
+        return driver.findElement(Locators.LocatorsForMenPage.ADD_TO_CART_SUCCESS_TEXT2).getText();
+    }
+
+    public void clickOnPriceTab() {
+        driver.findElement(LocatorsForMenPage.PRICE_TAB).click();
+    }
+
+    public void clickOnLessThan_$10() {
+        driver.findElement(LocatorsForMenPage.LESS_THAN_$10).click();
+    }
+
+    public void clickOn$10_$25() {
+        driver.findElement(LocatorsForMenPage.$10_$25).click();
+
+    }
+
+    public void clickOn$25_$50() {
+        driver.findElement(LocatorsForMenPage.$25_$50).click();
+    }
+
+    public void clickOn$50_$75() {
+        driver.findElement(LocatorsForMenPage.$50_$75).click();
+    }
+
+    public void clickOnOver_$75() {
+        driver.findElement(LocatorsForMenPage.OVER_$75).click();
+    }
+    /** Method to test Price Functionality Less than $10*/
+    public boolean testPriceFilterLessThanTen() {
+        boolean allPricesUnderTen = true;
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);        // Process to check if all product prices are under $10
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            double price = Double.parseDouble(priceText); // Convert the string to a double
+            if (price >= 10) {
+                allPricesUnderTen = false; // Set the flag to false if any product price is not under $10
+                errorMessages.append(String.format("Product priced at $%.2f found, which should not be under 'Less than $10' filter\n", price));
+            }
+            System.out.println("Price: " + price);
+        }
+
+        System.out.println(errorMessages);
+            return allPricesUnderTen;
+    }
+    /** Method to test Price Functionality $10-$25*/
+    public boolean testPriceFilterBetweenTenAndTwentyFive() {
+        boolean allPricesUnderTen = true;
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);        // Process to check if all product prices are under $10
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            double price = Double.parseDouble(priceText); // Convert the string to a double
+            if (price >= 25 || price <= 10) {
+                allPricesUnderTen = false; // Set the flag to false if any product price is not under $10
+                errorMessages.append(String.format("Product priced at $%.2f found, which should not be under 'Less than $10' filter\n", price));
+            }
+            System.out.println("Price: " + price);
+        }
+
+        System.out.println(errorMessages);
+        return allPricesUnderTen;
+    }
+    /** Method to test Price Functionality $25-$50*/
+    public boolean testPriceFilterBetweenTwentyFiveAndFifty() {
+        boolean allPricesUnderTen = true;
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);        // Process to check if all product prices are under $10
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            double price = Double.parseDouble(priceText); // Convert the string to a double
+            if (price <= 25 || price >= 50 ) {
+                allPricesUnderTen = false; // Set the flag to false if any product price is not under $10
+                errorMessages.append(String.format("Product priced at $%.2f found, which should not be under 'Less than $10' filter\n", price));
+            }
+            System.out.println("Price: " + price);
+        }
+
+        System.out.println(errorMessages);
+        return allPricesUnderTen;
+    }
+    /** Method to test Price Functionality $50-$75*/
+
+    public boolean testPriceFilterBetweenFiftyAndSeventyFive() {
+        boolean allPricesUnderTen = true;
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);        // Process to check if all product prices are under $10
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            double price = Double.parseDouble(priceText); // Convert the string to a double
+            if (price <= 50 || price >=75) {
+                allPricesUnderTen = false; // Set the flag to false if any product price is not under $10
+                errorMessages.append(String.format("Product priced at $%.2f found, which should not be under '50-$75' filter\n", price));
+            }
+            System.out.println("Price: " + price);
+        }
+
+        System.out.println(errorMessages);
+        return allPricesUnderTen;
+    }
+    /** Method to test Price Functionality over $75*/
+    public boolean testPriceFilterOverSeventyFive() {
+        boolean allPricesUnderTen = true;
+        wait.until(ExpectedConditions.elementToBeClickable(LocatorsForMenPage.SIMILAR_PRODUCTS));
+        List<WebElement> priceElements = driver.findElements(LocatorsForMenPage.SIMILAR_PRODUCTS);        // Process to check if all product prices are under $10
+        StringBuilder errorMessages = new StringBuilder();
+
+        for (WebElement priceElement : priceElements) {
+            String priceText = priceElement.getText().replaceAll("[^\\d.]", ""); // Remove non-numeric characters
+            double price = Double.parseDouble(priceText); // Convert the string to a double
+            if (price <= 75) {
+                allPricesUnderTen = false; // Set the flag to false if any product price is not under $10
+                errorMessages.append(String.format("Product priced at $%.2f found, which should not be under 'over $75' filter\n", price));
+            }
+            System.out.println("Price: " + price);
+        }
+
+        System.out.println(errorMessages);
+        return allPricesUnderTen;
+    }
 }
+
 

@@ -1,3 +1,4 @@
+import AssertionMessages.AssertionMessagesForEnterValidZipcodeTest;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -10,10 +11,8 @@ public class EnterValidZipCodeTest extends BaseTest{
     @Test
     public void testSteps() throws InterruptedException {
 
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         ProductPage productPage = menPage.clickOnProduct();
         productPage.clickOnSizeDropDown1();
@@ -21,7 +20,7 @@ public class EnterValidZipCodeTest extends BaseTest{
         productPage.addZipCode();
         productPage.clickOnSearch();
 
-        Assert.assertEquals(productPage.addressInfo(),AssertionMessages.ZipCode_Address);
+        Assert.assertEquals(productPage.addressInfo(), AssertionMessagesForEnterValidZipcodeTest.ZipCode_Address);
     }
 
 }

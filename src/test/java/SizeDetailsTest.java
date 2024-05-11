@@ -9,16 +9,16 @@ public class SizeDetailsTest extends BaseTest{
     @Test
     public void TestSteps() throws InterruptedException {
 
-        basePage.acceptPrivacyModal();
-        if (basePage.isAdDisplayed())
-            basePage.closeAdMark();
-        MenPage menPage = basePage.hoverOnMenPageDropdown();
+        homePage.acceptPrivacyModal();
+        if (homePage.isAdDisplayed())
+            homePage.closeAdMark();
+        MenPage menPage = homePage.hoverOnMenDropDown();
         menPage.clickOnViewAll();
         ProductPage productPage = menPage.clickOnProduct();
         productPage.clickOnSizeDetails();
         productPage.clickOnHowToMeasure();
 
-        Assert.assertEquals(productPage.isChartDisplayed(),AssertionMessages.ChartDisplayed);
+        Assert.assertEquals(productPage.isChartDisplayed(),AssertionMessages.AssertionMessagesForSizeDetailsTest.ChartDisplayed);
 
     }
 

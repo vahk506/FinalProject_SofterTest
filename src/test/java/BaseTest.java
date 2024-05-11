@@ -1,3 +1,5 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
@@ -6,13 +8,20 @@ import org.testng.annotations.BeforeClass;
 import java.net.URL;
 
 public class BaseTest {
-
-    RemoteWebDriver driver;
-    BasePage basePage;
+     WebDriver driver;
+//    RemoteWebDriver driver;
+    HomePage homePage;
 
     /** Class that is responsible for correctly Set up  Remote Web Driver*/
     @BeforeClass
     public void SetUp() throws Exception {
+//        driver = new ChromeDriver();
+//        driver.manage().window().maximize();
+//        driver.get("https://www.ae.com/us/en");
+//        homePage = new HomePage(driver);
+//
+//        ScreenshotListener screenshotListener = new ScreenshotListener();
+//        screenshotListener.setDriver(driver);
 
 
         // Set up Chrome options
@@ -26,11 +35,10 @@ public class BaseTest {
         System.out.println("Page title is: " + driver.getTitle());
 
 
-        basePage = new BasePage(driver);
+        homePage = new HomePage(driver);
 
         ScreenshotListener screenshotListener = new ScreenshotListener();
         screenshotListener.setDriver(driver);
-
     }
     /**
      * Method that is invoking after each test execution
